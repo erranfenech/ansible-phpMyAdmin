@@ -1,0 +1,59 @@
+---
+  - name: add basic auth to phpMyAdmin
+    template: src=htaccess_basic_auth.j2 dest=/usr/share/phpMyAdmin/.htaccess
+    when: ansible_distribution == 'CentOS' and ansible_distribution_version|version_compare(7, '<') or ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_version|version_compare(7, '<')
+
+  - name: Create basic auth user
+    command: htpasswd -cb /etc/phpMyAdmin/.htpasswd {{ basic_auth_usr }} {{ basic_auth_pass }}
+
+#  - name: add repository (epel-release) RHEL 7
+#    template: src=phpmyadmin_7.php.j2 dest=/etc/yum.repos.d/epel.repo
+#    when: ansible_distribution == 'CentOS' and ansible_distribution_version|version_compare(7, '>=') or ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_version|version_compare(7, '>=')
+#
+#
+#  - name: install phpMyAdmin and dependencies
+#    yum: name={{ item }} state=present
+ #   with_items:
+#     - phpMyAdmin
+#
+#
+#  - name: configuration changes to phpMyAdmin (config.inc)
+#    template: src=config.inc.j2 dest=/etc/phpMyAdmin/config.inc.php backup=yes
+ #   notify:
+ #     - restart webmin
+
+
+#  - name: add in allow IP address
+#    lineinfile: 
+#      path: /etc/httpd/conf.d/phpMyAdmin.conf
+#      #insertafter: 'Allow from 127.0.0.1'
+#      regexp: '^Deny from All '
+#      insertbefore: BOF
+#      line: '     Allow from {{ phpMyAdmin_allow_ip }}'
+
+#  - name: add in allow IP address
+#    lineinfile:
+#       path: /etc/httpd/conf.d/phpMyAdmin.conf
+#       regexp: '^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$'
+#       insertafter: 'Allow from 127.0.0.1'
+#       line: 'Allow from {{ phpMyAdmin_allow_ip }}'
+#  - name: add IP
+#    blockinfile:
+#       path: /etc/httpd/conf.d/phpMyAdmin.conf
+#       insertbefore: "Deny from All"
+#       block: |
+#         Allow from {{ phpMyAdmin_allow_ip }}
+
+#  - name: configuration changes to phpMyAdmin (phpMyAdmin.conf) RHEL 6
+#    template: src=phpMyAdmin.conf.j2 dest=/etc/httpd/conf.d/phpMyAdmin.conf backup=yes
+#    notify:
+#      - restart httpd
+#    when: ansible_distribution == 'CentOS' and ansible_distribution_version|version_compare(7, '<') or ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_version|version_compare(7, '<')
+#
+#  - name: configuration changes to phpMyAdmin (phpMyAdmin.conf) RHEL 7
+#    template: src=phpMyAdmin_7.conf.j2 dest=/etc/httpd/conf.d/phpMyAdmin.conf backup=yes
+#    notify:
+#      - restart httpd
+#    when: ansible_distribution == 'CentOS' and ansible_distribution_version|version_compare(7, '>=') or ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_version|version_compare(7, '>=')
+#
+

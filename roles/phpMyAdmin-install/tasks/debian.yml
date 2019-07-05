@@ -1,0 +1,24 @@
+---
+  - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: Install phpMyAdmin and dependencies
+    apt: name={{ item }} state=present update_cache=yes
+    with_items:
+     - phpmyadmin
+    
+  - name: template file phpmyadmin.conf
+    template: src=phpmyadmin_apache2.conf dest=/etc/apache2/conf-available/phpmyadmin.conf
+
+  - name: template file config.inc
+    template: src=config.inc_apache2.j2 dest=/etc/phpmyadmin/config.inc.php
+
+  - name: enable phpmyadmin module
+    command: a2enconf phpmyadmin
+    notify:
+      - restart apache
+
+#  - name: insert ufw rule
+#    ufw: rule=allow port="{{ service_port_webmin }}" proto=tcp

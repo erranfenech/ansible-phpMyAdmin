@@ -1,0 +1,5 @@
+---
+- hosts: all
+  roles: 
+    - {role: phpMyAdmin-install, tags: install-phpMyAdmin}
+    - {role: phpMyAdmin-basic-auth, tags: install-basic-auth}

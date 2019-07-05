@@ -1,0 +1,5 @@
+---
+# phpMyAdmin variables
+phpMyadmin_host: localhost
+phpMyAdmin_allow_ip: 127.0.0.1
+
